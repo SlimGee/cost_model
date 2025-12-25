@@ -1,0 +1,194 @@
+<div class="space-y-6">
+  <!-- Header with Back Button -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">Analysis Results</h2>
+      <p class="text-gray-600 mt-1">Part:
+        <%= @slicing_data.part_name %></p>
+    </div>
+    <%= link_to "← New Analysis",
+    root_path,
+    class:
+      "px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" %>
+  </div>
+  <!-- Configuration Summary -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Machine & Material -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Configuration</h3>
+
+      <div class="space-y-4">
+        <div>
+          <h4 class="text-sm font-medium text-gray-500 mb-2">Machine</h4>
+          <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+            <div>
+              <p class="font-semibold text-gray-900"><%= @machine.name %></p>
+              <p class="text-sm text-gray-600"><%= @machine.model_number %></p>
+            </div>
+            <span class="text-sm text-gray-600"><%= @machine.laser_power.to_i %>W</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-medium text-gray-500 mb-2">Material</h4>
+          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+            <div>
+              <p class="font-semibold text-gray-900"><%= @material.name %></p>
+              <p class="text-sm text-gray-600"><%= @material.code %></p>
+            </div>
+            <span class="text-sm text-gray-600"><%= @material.density %>
+              g/cm³</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Part Geometry -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Part Geometry</h3>
+
+      <dl class="space-y-3">
+        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+          <dt class="text-sm text-gray-600">Part Volume</dt>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= number_with_delimiter(@slicing_data.part_volume, delimiter: ",") %>
+            mm³
+          </dd>
+        </div>
+
+        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+          <dt class="text-sm text-gray-600">Part Height</dt>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= number_with_precision(@slicing_data.part_height, precision: 2) %>
+            mm
+          </dd>
+        </div>
+
+        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+          <dt class="text-sm text-gray-600">Surface Area</dt>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= number_with_delimiter(@slicing_data.surface_area, delimiter: ",") %>
+            mm²
+          </dd>
+        </div>
+
+        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+          <dt class="text-sm text-gray-600">Support Volume</dt>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= number_with_delimiter(@slicing_data.support_volume || 0, delimiter: ",") %>
+            mm³
+          </dd>
+        </div>
+
+        <div class="flex justify-between items-center py-2">
+          <dt class="text-sm text-gray-600">Layer Thickness</dt>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @slicing_data.layer_thickness %>
+            mm
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+  <!-- Calculated Metrics -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Calculated Metrics</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="text-center p-4 bg-blue-50 rounded-lg">
+        <p class="text-sm text-gray-600 mb-1">Part Mass</p>
+        <p class="text-2xl font-bold text-blue-600">
+          <%= number_with_precision(@slicing_data.part_mass, precision: 3) %>
+        </p>
+        <p class="text-xs text-gray-500 mt-1">kg</p>
+      </div>
+
+      <div class="text-center p-4 bg-green-50 rounded-lg">
+        <p class="text-sm text-gray-600 mb-1">Total Powder Needed</p>
+        <p class="text-2xl font-bold text-green-600">
+          <%= number_with_precision(@slicing_data.total_powder_mass, precision: 3) %>
+        </p>
+        <p class="text-xs text-gray-500 mt-1">kg</p>
+      </div>
+
+      <div class="text-center p-4 bg-purple-50 rounded-lg">
+        <p class="text-sm text-gray-600 mb-1">Est. Build Time</p>
+        <p class="text-2xl font-bold text-purple-600">
+          <%= number_with_precision(@slicing_data.build_time_hours, precision: 2) %>
+        </p>
+        <p class="text-xs text-gray-500 mt-1">hours</p>
+      </div>
+
+      <div class="text-center p-4 bg-orange-50 rounded-lg">
+        <p class="text-sm text-gray-600 mb-1">Parts per Build</p>
+        <p class="text-2xl font-bold text-orange-600">
+          <%= @slicing_data.parts_per_build %>
+        </p>
+        <p class="text-xs text-gray-500 mt-1">units</p>
+      </div>
+    </div>
+  </div>
+  <!-- Material Efficiency -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Material Efficiency</h3>
+
+    <div class="space-y-4">
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="text-sm text-gray-600">Material Utilization</span>
+          <span class="text-sm font-semibold text-gray-900">
+            <%= number_to_percentage(@slicing_data.material_utilization * 100, precision: 1) %>
+          </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-blue-600 h-2 rounded-full"
+            style="width: <%= @slicing_data.material_utilization * 100 %>%"
+          ></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="text-sm text-gray-600">Material Recycling Efficiency</span>
+          <span class="text-sm font-semibold text-gray-900">
+            <%= number_to_percentage(@material.recycling_efficiency * 100, precision: 1) %>
+          </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-green-600 h-2 rounded-full"
+            style="width: <%= @material.recycling_efficiency * 100 %>%"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Next Steps -->
+  <div
+    class="
+      bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6
+    "
+  >
+    <h3 class="text-lg font-semibold text-gray-900 mb-3">
+      Next: Cost & Sustainability Analysis
+    </h3>
+    <p class="text-sm text-gray-700 mb-4">
+      In the next phase, we'll calculate detailed cost breakdowns, energy
+      consumption, carbon footprint, and financial metrics (NPV, IRR, ROI).
+    </p>
+    <div class="flex gap-3">
+      <%= link_to "New Analysis",
+      root_path,
+      class:
+        "px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" %>
+      <button
+        class="
+          px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors
+        "
+        disabled
+      >
+        Run Full Analysis (Coming Soon)
+      </button>
+    </div>
+  </div>
+</div>

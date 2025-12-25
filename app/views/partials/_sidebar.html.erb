@@ -1,0 +1,73 @@
+<aside
+  :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
+  class="
+    sidebar fixed left-0 top-0 z-9999 flex h-screen w-[290px] flex-col
+    overflow-y-hidden border-r border-gray-200 bg-white px-5 dark:border-gray-800
+    dark:bg-black lg:static lg:translate-x-0
+  "
+>
+  <!-- SIDEBAR HEADER -->
+  <div
+    :class="sidebarToggle ? 'justify-center' : 'justify-between'"
+    class="flex items-center gap-2 pt-8 sidebar-header pb-7"
+  >
+    <a href="index.html">
+      <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
+
+        <%= image_tag "logo/logo.svg", class: "dark:hidden" %>
+        <%= image_tag "logo/logo-dark.svg", class: "hidden dark:block" %>
+      </span>
+
+      <img
+        class="logo-icon"
+        :class="sidebarToggle ? 'lg:block' : 'hidden'"
+        src="./images/logo/logo-icon.svg"
+        alt="Logo"
+      />
+    </a>
+  </div>
+  <!-- SIDEBAR HEADER -->
+  <div
+    class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar"
+  >
+    <!-- Sidebar Menu -->
+    <nav x-data="{selected: $persist('Dashboard')}">
+      <!-- Menu Group -->
+      <div>
+
+        <ul class="flex flex-col gap-4 mb-6">
+          <!-- Menu Item Dashboard -->
+          <li>
+            <a
+              href="#"
+              @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
+              class="menu-item group"
+              :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' || page === 'marketing' || page === 'crm' || page === 'stocks') ? 'menu-item-active' : 'menu-item-inactive'"
+            >
+
+              <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                Dashboard
+              </span>
+
+            </a>
+          </li>
+          <!-- Menu Item Dashboard --> <!-- Menu Item Calendar -->
+          <li>
+            <a
+              href="calendar.html"
+              @click="selected = (selected === 'Calendar' ? '':'Calendar')"
+              class="menu-item group"
+              :class="(selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
+            >
+              <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                Calendar
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Others Group -->
+    </nav>
+    <!-- Promo Box -->
+  </div>
+</aside>

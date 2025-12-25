@@ -1,0 +1,277 @@
+<div class="space-y-6">
+  <!-- Header Section -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2">
+      Cost & Sustainability Calculator
+    </h2>
+    <p class="text-gray-600">
+      Analyze SLM production costs, investment viability, and environmental
+      impact with real-time data integration.
+    </p>
+  </div>
+
+  <%= form_with model: @slicing_data, url: calculations_path, class: "space-y-6" do |f| %>
+    <!-- Machine Selection -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        1. Select Machine
+      </h3>
+
+      <% if f.object.errors[:machine].any? %>
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p class="text-sm text-red-800"><%= f.object.errors[:machine].first %></p>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <% @machines.each do |machine| %>
+          <label class="cursor-pointer">
+            <input
+              type="radio"
+              name="slicing_datum[machine_id]"
+              value="<%= machine.id %>"
+              class="peer hidden"
+              required
+            >
+            <div
+              class="
+                border-2 border-gray-200 rounded-lg p-4 peer-checked:border-blue-500
+                peer-checked:bg-blue-50 hover:border-blue-300 transition-colors
+              "
+            >
+              <div class="flex items-center justify-between mb-3">
+                <h4 class="font-semibold text-gray-900"><%= machine.name %></h4>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  <%= machine.model_number %>
+                </span>
+              </div>
+
+              <dl class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Build Volume:</dt>
+                  <dd class="font-medium text-gray-900">
+                    <%= machine.build_volume_x.to_i %>×<%= machine.build_volume_y.to_i %><%= machine.build_volume_z.to_i %>
+                    mm
+                  </dd>
+                </div>
+
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Laser Power:</dt>
+                  <dd class="font-medium text-gray-900"><%= machine.laser_power.to_i %>
+                    W</dd>
+                </div>
+
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Purchase Price:</dt>
+                  <dd class="font-medium text-gray-900">R
+                    <%= number_to_human(machine.purchase_price, precision: 2) %></dd>
+                </div>
+              </dl>
+            </div>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <!-- Material Selection -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        2. Select Material
+      </h3>
+
+      <% if f.object.errors[:material].any? %>
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p class="text-sm text-red-800"><%= f.object.errors[:material].first %></p>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <% @materials.each do |material| %>
+          <label class="cursor-pointer">
+            <input
+              type="radio"
+              name="slicing_datum[material_id]"
+              value="<%= material.id %>"
+              class="peer hidden"
+              required
+            >
+            <div
+              class="
+                border-2 border-gray-200 rounded-lg p-4 peer-checked:border-green-500
+                peer-checked:bg-green-50 hover:border-green-300 transition-colors
+              "
+            >
+              <div class="mb-3">
+                <h4 class="font-semibold text-gray-900"><%= material.name %></h4>
+                <p class="text-xs text-gray-500 mt-1"><%= material.code %></p>
+              </div>
+
+              <dl class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Density:</dt>
+                  <dd class="font-medium text-gray-900"><%= material.density %>
+                    g/cm³</dd>
+                </div>
+
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Price:</dt>
+                  <dd class="font-medium text-gray-900">R
+                    <%= material.raw_material_price.to_i %>/kg</dd>
+                </div>
+
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Recycling:</dt>
+                  <dd class="font-medium text-gray-900"><%= (material.recycling_efficiency * 100).to_i %>%</dd>
+                </div>
+
+                <div class="flex justify-between">
+                  <dt class="text-gray-500">Carbon:</dt>
+                  <dd class="font-medium text-gray-900"><%= material.embodied_carbon %>
+                    kg CO₂</dd>
+                </div>
+              </dl>
+            </div>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <!-- Part Geometry Parameters -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        3. Enter Part Geometry Parameters
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
+          <%= f.label :part_name,
+                  "Part Name",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.text_field :part_name,
+                       class:
+                         "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                       placeholder: "e.g., Bracket-001" %>
+          <% if f.object.errors[:part_name].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:part_name].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :part_volume,
+                  "Part Volume (mm³)",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :part_volume,
+                         step: "0.01",
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                         placeholder: "e.g., 12500.00" %>
+          <% if f.object.errors[:part_volume].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:part_volume].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :part_height,
+                  "Part Height (mm)",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :part_height,
+                         step: "0.01",
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                         placeholder: "e.g., 45.00" %>
+          <% if f.object.errors[:part_height].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:part_height].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :surface_area,
+                  "Surface Area (mm²)",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :surface_area,
+                         step: "0.01",
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                         placeholder: "e.g., 8500.00" %>
+          <% if f.object.errors[:surface_area].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:surface_area].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :support_volume,
+                  "Support Volume (mm³)",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :support_volume,
+                         step: "0.01",
+                         value: 0,
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                         placeholder: "e.g., 1500.00" %>
+          <% if f.object.errors[:support_volume].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:support_volume].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :layer_thickness,
+                  "Layer Thickness (mm)",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :layer_thickness,
+                         step: "0.001",
+                         value: 0.03,
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                         placeholder: "e.g., 0.03" %>
+          <% if f.object.errors[:layer_thickness].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:layer_thickness].first %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Production Parameters -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        4. Production Configuration
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <%= f.label :parts_per_build,
+                  "Parts per Build",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :parts_per_build,
+                         value: 1,
+                         min: 1,
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+          <p class="mt-1 text-xs text-gray-500">How many parts will be produced in a single build?</p>
+          <% if f.object.errors[:parts_per_build].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:parts_per_build].first %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :material_utilization,
+                  "Material Utilization Efficiency",
+                  class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :material_utilization,
+                         step: "0.01",
+                         value: 0.6,
+                         min: 0.1,
+                         max: 1.0,
+                         class:
+                           "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+          <p class="mt-1 text-xs text-gray-500">Typical range: 0.5-0.7 (50-70% efficiency)</p>
+          <% if f.object.errors[:material_utilization].any? %>
+            <p class="mt-1 text-sm text-red-600"><%= f.object.errors[:material_utilization].first %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="flex justify-end">
+      <%= f.submit "Calculate Costs & Sustainability Metrics",
+               class:
+                 "px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-colors cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

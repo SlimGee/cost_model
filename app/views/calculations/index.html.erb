@@ -267,6 +267,248 @@
         </div>
       </div>
     </div>
+    <!-- Advanced Parameters (Collapsible) -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">
+          5. Advanced Parameters (Optional)
+        </h3>
+        <button
+          type="button"
+          onclick="document.getElementById('advanced-params').classList.toggle('hidden')"
+          class="text-sm text-blue-600 hover:text-blue-800"
+        >
+          Toggle Advanced Settings
+        </button>
+      </div>
+
+      <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div class="flex items-start">
+          <%= f.check_box :use_custom_parameters, class: "mt-1 mr-2" %>
+          <%= f.label :use_custom_parameters, class: "text-sm text-blue-800" do %>
+            <span class="font-medium">Use custom parameters for this analysis</span>
+            <span class="block text-xs mt-1">
+              By default, global parameters are used. Enable this to override
+              with custom values below.
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="advanced-params" class="hidden space-y-6">
+        <!-- Economic Parameters -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Economic Parameters</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <%= f.label :electricity_rate,
+                      "Electricity Rate (R/kWh)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :electricity_rate,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :labor_rate,
+                      "Labor Rate (R/hr)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :labor_rate,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :annual_operating_hours,
+                      "Annual Operating Hours",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_operating_hours,
+                             step: "1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+        <!-- Gas & Consumables -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Gas & Consumables</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <%= f.label :inert_gas_price,
+                      "Inert Gas Price (R/m³)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :inert_gas_price,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :gas_consumption_per_hour,
+                      "Gas Consumption (m³/hr)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :gas_consumption_per_hour,
+                             step: "0.001",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :waste_disposal_cost_per_kg,
+                      "Waste Disposal (R/kg)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :waste_disposal_cost_per_kg,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+        <!-- Facility Costs -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Facility Costs (Annual)</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <%= f.label :annual_rent, "Rent (R/year)", class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_rent,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :annual_utilities,
+                      "Utilities (R/year)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_utilities,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :annual_admin,
+                      "Admin (R/year)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_admin,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+        <!-- Digital Infrastructure -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Digital Infrastructure (Annual)</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <%= f.label :annual_software_cost,
+                      "Software Licenses (R/year)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_software_cost,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :annual_hpc_cost,
+                      "HPC Systems (R/year)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :annual_hpc_cost,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Maintenence -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Maintenance<h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <%= f.label :preventive_maintenance_cost,
+                      "Preventive Maintenance Cost (R)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :preventive_maintenance_cost,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :preventive_maintenance_frequency,
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :preventive_maintenance_frequency,
+                             step: "1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+
+            <div>
+              <%= f.label :corrective_maintenance_cost,
+                      "Corrective Maintenance Cost (R)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :corrective_maintenance_cost,
+                             step: "0.01",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :corrective_maintenance_frequency,
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :corrective_maintenance_frequency,
+                             step: "1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+        <!-- Build Parameters -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Build & Process Parameters</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <%= f.label :machine_power_consumption,
+                      "Machine Power (kW)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :machine_power_consumption,
+                             step: "0.1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :setup_time_hours,
+                      "Setup Time (hours)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :setup_time_hours,
+                             step: "0.1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+            <div>
+              <%= f.label :post_processing_time_per_part,
+                      "Post-Processing (hrs/part)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :post_processing_time_per_part,
+                             step: "0.1",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+        <!-- Sustainability -->
+        <div>
+          <h4 class="font-medium text-gray-900 mb-3">Sustainability Parameters</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <%= f.label :grid_emission_factor,
+                      "Grid Emission Factor (kg CO₂/kWh)",
+                      class: "block text-sm text-gray-700 mb-1" %>
+              <%= f.number_field :grid_emission_factor,
+                             step: "0.001",
+                             class:
+                               "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Submit Button -->
     <div class="flex justify-end">
       <%= f.submit "Calculate Costs & Sustainability Metrics",

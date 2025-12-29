@@ -11,20 +11,13 @@
     :class="sidebarToggle ? 'justify-center' : 'justify-between'"
     class="flex items-center gap-2 pt-8 sidebar-header pb-7"
   >
-    <a href="index.html">
+    <%= link_to root_path do %>
       <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-
         <%= image_tag "logo/logo.svg", class: "dark:hidden" %>
         <%= image_tag "logo/logo-dark.svg", class: "hidden dark:block" %>
       </span>
+    <% end %>
 
-      <img
-        class="logo-icon"
-        :class="sidebarToggle ? 'lg:block' : 'hidden'"
-        src="./images/logo/logo-icon.svg"
-        alt="Logo"
-      />
-    </a>
   </div>
   <!-- SIDEBAR HEADER -->
   <div
@@ -39,7 +32,7 @@
           <!-- Menu Item Dashboard -->
           <li>
             <a
-              href="#"
+              href="<%= root_path %>"
               @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
               class="menu-item group"
               :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' || page === 'marketing' || page === 'crm' || page === 'stocks') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -54,13 +47,13 @@
           <!-- Menu Item Dashboard --> <!-- Menu Item Calendar -->
           <li>
             <a
-              href="calendar.html"
+              href="<%= calculations_path %>"
               @click="selected = (selected === 'Calendar' ? '':'Calendar')"
               class="menu-item group"
               :class="(selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
             >
               <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                Calendar
+                Calculations
               </span>
             </a>
           </li>

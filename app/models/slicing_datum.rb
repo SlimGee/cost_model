@@ -13,6 +13,39 @@ class SlicingDatum < ApplicationRecord
 
   before_save :calculate_derived_values
 
+  def self.with_default_params
+    params = GlobalParameter.current
+    new(params.attributes.except(:id))
+  end
+
+  def effective_parameters
+    if use_custom_parameters?
+      GlobalParameter.new(
+        electricity_rate: electricity_rate,
+        labor_rate: labor_rate,
+        annual_operating_hours: annual_operating_hours,
+        inert_gas_price: inert_gas_price,
+        gas_consumption_per_hour: gas_consumption_per_hour,
+        annual_rent: annual_rent,
+        annual_utilities: annual_utilities,
+        annual_admin: annual_admin,
+        annual_software_cost: annual_software_cost,
+        annual_hpc_cost: annual_hpc_cost,
+        preventive_maintenance_frequency: preventive_maintenance_frequency,
+        preventive_maintenance_cost: preventive_maintenance_cost,
+        corrective_maintenance_frequency: corrective_maintenance_frequency,
+        corrective_maintenance_cost: corrective_maintenance_cost,
+        grid_emission_factor: grid_emission_factor,
+        waste_disposal_cost_per_kg: waste_disposal_cost_per_kg,
+        machine_power_consumption: machine_power_consumption,
+        setup_time_hours: setup_time_hours,
+        post_processing_time_per_part: post_processing_time_per_part
+      )
+    else
+      GlobalParameter.current
+    end
+  end
+
   private
 
   def calculate_derived_values

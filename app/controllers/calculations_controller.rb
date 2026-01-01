@@ -1,6 +1,11 @@
 # app/controllers/calculations_controller.rb
 class CalculationsController < ApplicationController
   def index
+    @slicing_data = SlicingDatum.order(created_at: :desc)
+    @analyses = @slicing_data
+  end
+
+  def new
     @machines = Machine.all
     @materials = Material.all
     @slicing_data = SlicingDatum.with_default_params
@@ -16,7 +21,7 @@ class CalculationsController < ApplicationController
       @machines = Machine.all
       @materials = Material.all
       @global_params = GlobalParameter.current
-      render :index, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,8 +30,14 @@ class CalculationsController < ApplicationController
     @machine = @slicing_data.machine
     @material = @slicing_data.material
     @calculator = CostCalculator.new(@slicing_data)
-    @params = GlobalParameter.current
+    @financial_analyzer = FinancialAnalyzer.new(@slicing_data, @calculator)
+    @params = @slicing_data.effective_parameters
     @global_params = GlobalParameter.current
+
+    # Run Monte Carlo simulation
+    iterations = @params.monte_carlo_iterations || 10_000
+    @monte_carlo = MonteCarloSimulator.new(@slicing_data, iterations: iterations)
+    @monte_carlo.run!
   end
 
   private
@@ -60,6 +71,19 @@ class CalculationsController < ApplicationController
         machine_power_consumption
         setup_time_hours
         post_processing_time_per_part
+        preventive_maintenance_cost
+        preventive_maintenance_frequency
+        corrective_maintenance_cost
+        corrective_maintenance_frequency
+        price_per_part
+        discount_rate
+        analysis_horizon_years
+        upfront_investment
+        machine_utilization_rate
+        minimum_acceptable_return
+        cost_volatility
+        revenue_volatility
+        monte_carlo_iterations
       ]
     )
   end

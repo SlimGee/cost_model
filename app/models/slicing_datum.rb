@@ -39,7 +39,18 @@ class SlicingDatum < ApplicationRecord
         waste_disposal_cost_per_kg: waste_disposal_cost_per_kg,
         machine_power_consumption: machine_power_consumption,
         setup_time_hours: setup_time_hours,
-        post_processing_time_per_part: post_processing_time_per_part
+        post_processing_time_per_part: post_processing_time_per_part,
+
+        price_per_part: price_per_part,
+        discount_rate: discount_rate,
+        analysis_horizon_years: analysis_horizon_years,
+        upfront_investment: upfront_investment,
+        machine_utilization_rate: machine_utilization_rate,
+        minimum_acceptable_return: minimum_acceptable_return,
+        # Monte Carlo parameters
+        cost_volatility: cost_volatility,
+        revenue_volatility: revenue_volatility,
+        monte_carlo_iterations: monte_carlo_iterations
       )
     else
       GlobalParameter.current

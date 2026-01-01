@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root "home#index"
-  resources :calculations, only: %i[index create show]
+  resources :calculations do
+    collection do
+      post :compare
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

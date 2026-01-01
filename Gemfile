@@ -66,3 +66,20 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "distribution", "~> 0.8.0"
+
+gem "finrb", git: "https://github.com/ncs1/finrb.git"
+gem "descriptive_statistics", "~> 2.5"
+
+gem "statistics", "~> 1.0"
+
+gem "parallel", "~> 1.27"
+
+gem "prime", "~> 0.1.4"
+
+gem "numo-narray", "~> 0.9.2"
+
+gem "finance_rb", "~> 1.0"
+
+gem "money-rails", "~> 2.0"

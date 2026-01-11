@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncs1/finrb.git
-  revision: 11798d8c88308de2ddd312258be9afcf591985dc
+  revision: 6bd2fae22e71f2ae634b1b71dae5f21f9d77379f
   specs:
     finrb (0.1.10)
       activesupport
@@ -188,7 +188,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.0)
+    minitest (6.0.1)
       prism (~> 1.5)
     monetize (2.0.0)
       money (~> 7.0)
@@ -525,7 +525,7 @@ CHECKSUMS
   matrix (0.4.3) sha256=a0d5ab7ddcc1973ff690ab361b67f359acbb16958d1dc072b8b956a286564c5b
   mini_magick (5.3.1) sha256=29395dfd76badcabb6403ee5aff6f681e867074f8f28ce08d78661e9e4a351c4
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
-  minitest (6.0.0) sha256=4ca597fc1d735ea18d2b4b98c5fb1d5a6da4a6f35ddf32bd5fa3eded33a453be
+  minitest (6.0.1) sha256=7854c74f48e2e975969062833adc4013f249a4b212f5e7b9d5c040bf838d54bb
   monetize (2.0.0) sha256=152980cadff9fd11a95817d56e3d7d69b07998c4506f15d971edf05851f82aba
   money (7.0.2) sha256=615c27c1fd1d190dceda5c5f4dd5af5f4d20f790ff3b62ea2fe2d96eb22e2c60
   money-rails (2.0.0) sha256=104cad53ae3e9b959705e4f898c0b3e91792908c95e619e568ecd49d1a8a41d8

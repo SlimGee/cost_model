@@ -9,6 +9,7 @@ class CalculationsController < ApplicationController
     @machines = Machine.all
     @materials = Material.all
     @slicing_data = SlicingDatum.with_default_params
+    @slicing_data.build_default_line_items # Pre-populate line items for the form
     @global_params = GlobalParameter.current
   end
 
@@ -16,6 +17,9 @@ class CalculationsController < ApplicationController
     @slicing_data = SlicingDatum.new(slicing_data_params)
 
     if @slicing_data.save
+      # Calculate line item quantities after save
+      LineItemsCalculator.new(@slicing_data).calculate_quantities! if @slicing_data.cost_line_items.any?
+
       redirect_to calculation_path(@slicing_data), notice: "Analysis created successfully!"
     else
       @machines = Machine.all
@@ -40,50 +44,80 @@ class CalculationsController < ApplicationController
     @monte_carlo.run!
   end
 
+  def edit
+    @slicing_data = SlicingDatum.find(params[:id])
+    @machines = Machine.all
+    @materials = Material.all
+    @global_params = GlobalParameter.current
+  end
+
+  def update
+    @slicing_data = SlicingDatum.find(params[:id])
+
+    if @slicing_data.update(slicing_data_params)
+      redirect_to calculation_path(@slicing_data), notice: "Analysis updated successfully!"
+    else
+      @machines = Machine.all
+      @materials = Material.all
+      @global_params = GlobalParameter.current
+      render :edit, status: :unprocessable_content
+    end
+  end
+
   private
 
   def slicing_data_params
-    params.expect(
-      slicing_datum: %i[
-        part_name
-        part_volume
-        part_height
-        surface_area
-        support_volume
-        layer_thickness
-        parts_per_build
-        material_utilization
-        machine_id
-        material_id
-        use_custom_parameters
-        electricity_rate
-        labor_rate
-        annual_operating_hours
-        inert_gas_price
-        gas_consumption_per_hour
-        annual_rent
-        annual_utilities
-        annual_admin
-        annual_software_cost
-        annual_hpc_cost
-        grid_emission_factor
-        waste_disposal_cost_per_kg
-        machine_power_consumption
-        setup_time_hours
-        post_processing_time_per_part
-        preventive_maintenance_cost
-        preventive_maintenance_frequency
-        corrective_maintenance_cost
-        corrective_maintenance_frequency
-        price_per_part
-        discount_rate
-        analysis_horizon_years
-        upfront_investment
-        machine_utilization_rate
-        minimum_acceptable_return
-        cost_volatility
-        revenue_volatility
-        monte_carlo_iterations
+    params.require(:slicing_datum).permit(
+      :part_name,
+      :part_volume,
+      :part_height,
+      :surface_area,
+      :support_volume,
+      :layer_thickness,
+      :parts_per_build,
+      :material_utilization,
+      :machine_id,
+      :material_id,
+      :use_custom_parameters,
+      :electricity_rate,
+      :labor_rate,
+      :annual_operating_hours,
+      :inert_gas_price,
+      :gas_consumption_per_hour,
+      :annual_rent,
+      :annual_utilities,
+      :annual_admin,
+      :annual_software_cost,
+      :annual_hpc_cost,
+      :grid_emission_factor,
+      :waste_disposal_cost_per_kg,
+      :machine_power_consumption,
+      :setup_time_hours,
+      :post_processing_time_per_part,
+      :preventive_maintenance_cost,
+      :preventive_maintenance_frequency,
+      :corrective_maintenance_cost,
+      :corrective_maintenance_frequency,
+      :price_per_part,
+      :discount_rate,
+      :analysis_horizon_years,
+      :upfront_investment,
+      :machine_utilization_rate,
+      :minimum_acceptable_return,
+      :cost_volatility,
+      :revenue_volatility,
+      :monte_carlo_iterations,
+      cost_line_items_attributes: %i[
+        id
+        category
+        name
+        description
+        unit_cost
+        quantity
+        unit_type
+        is_per_build
+        position
+        _destroy
       ]
     )
   end

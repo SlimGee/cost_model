@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_29_150046) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_11_170657) do
+  create_table "cost_line_items", force: :cascade do |t|
+    t.string "category", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "is_per_build", default: true
+    t.string "name", null: false
+    t.integer "position"
+    t.decimal "quantity", precision: 15, scale: 4, default: "1.0", null: false
+    t.integer "slicing_datum_id", null: false
+    t.decimal "total_cost", precision: 15, scale: 2
+    t.decimal "unit_cost", precision: 15, scale: 2, null: false
+    t.string "unit_type"
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_cost_line_items_on_category"
+    t.index ["slicing_datum_id", "category"], name: "index_cost_line_items_on_slicing_datum_id_and_category"
+    t.index ["slicing_datum_id"], name: "index_cost_line_items_on_slicing_datum_id"
+  end
+
   create_table "global_parameters", force: :cascade do |t|
     t.integer "analysis_horizon_years", default: 5
     t.decimal "annual_admin", precision: 12, scale: 2, default: "80000.0"
@@ -120,6 +138,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_150046) do
     t.index ["material_id"], name: "index_slicing_data_on_material_id"
   end
 
+  add_foreign_key "cost_line_items", "slicing_data"
   add_foreign_key "slicing_data", "machines"
   add_foreign_key "slicing_data", "materials"
 end

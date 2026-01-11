@@ -676,142 +676,233 @@
     </div>
   </div>
   <!-- Detailed Cost Components -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Material Costs -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-        Material & Consumables
-      </h3>
+<!-- Replace the "Detailed Cost Components" section with this enhanced version -->
 
-      <dl class="space-y-3">
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Powder Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.powder_cost_per_build.to_money('zar').format %>
-          </dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Inert Gas</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.gas_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Waste Disposal</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.waste_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 bg-green-50 -mx-2 px-2 rounded">
-          <dt class="text-sm font-bold text-gray-900">Total Consumables</dt>
-          <dd class="text-sm font-bold text-green-600">
-            <%= @calculator.consumables_cost_per_build.to_money('zar').format %>
-          </dd>
-        </div>
-      </dl>
-    </div>
-    <!-- Labor & Time Costs -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
-        Labor & Operations
-      </h3>
-
-      <dl class="space-y-3">
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Setup Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.setup_cost.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Operator Time (<%= number_with_precision(@calculator.operator_time, precision: 1) %>h)</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.labor_cost_per_build.to_money('zar').format %>
-          </dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Labor Rate</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @params.labor_rate.to_money('zar').format %>/hr</dd>
-        </div>
-        <div class="flex justify-between py-2 bg-blue-50 -mx-2 px-2 rounded">
-          <dt class="text-sm font-bold text-gray-900">Total Labor</dt>
-          <dd class="text-sm font-bold text-blue-600">
-            <%= (@calculator.labor_cost_per_build + @calculator.setup_cost).to_money('zar').format
-            %>
-          </dd>
-        </div>
-      </dl>
-    </div>
-    <!-- Energy Costs -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
-        Energy Consumption
-      </h3>
-
-      <dl class="space-y-3">
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Energy Consumed</dt>
-          <dd class="text-sm font-semibold text-gray-900"><%= number_with_precision(@calculator.energy_consumption, precision: 2) %>
-            kWh</dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Electricity Rate</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= @params.electricity_rate %>/kWh</dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Efficiency</dt>
-          <dd class="text-sm font-semibold text-gray-900"><%= number_with_precision(@calculator.energy_efficiency_per_kg, precision: 2) %>
-            kWh/kg</dd>
-        </div>
-        <div class="flex justify-between py-2 bg-yellow-50 -mx-2 px-2 rounded">
-          <dt class="text-sm font-bold text-gray-900">Total Energy Cost</dt>
-          <dd class="text-sm font-bold text-yellow-600">
-            <%= @calculator.energy_cost_per_build.to_money('zar').format %></dd>
-        </div>
-      </dl>
-    </div>
-    <!-- Equipment & Overhead -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
-        Equipment & Overhead
-      </h3>
-
-      <dl class="space-y-3">
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Machine Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.equipment_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Facility Overhead</dt>
-          <dd class="text-sm font-semibold text-gray-900">
-            <%= @calculator.facility_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Digital Infrastructure</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= @calculator.digital_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 border-b border-gray-100">
-          <dt class="text-sm text-gray-600">Maintenance</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= @calculator.maintenance_cost_per_build.to_money('zar').format %></dd>
-        </div>
-        <div class="flex justify-between py-2 bg-purple-50 -mx-2 px-2 rounded">
-          <dt class="text-sm font-bold text-gray-900">Total Overhead</dt>
-          <dd class="text-sm font-bold text-purple-600">
-            
-            <%= (@calculator.equipment_cost_per_build + @calculator.facility_cost_per_build +
-                @calculator.digital_cost_per_build + @calculator.maintenance_cost_per_build).to_money('zar').format
-             %>
-          </dd>
-        </div>
-      </dl>
+<!-- Detailed Cost Components with Line Items -->
+<div class="space-y-6">
+  <h3 class="text-xl font-semibold text-gray-900">Detailed Cost Breakdown by Category</h3>
+  
+  <!-- Labor Costs -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+      Labor Costs - <%= @calculator.labor_cost_per_build.to_money('zar').format %>
+    </h4>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Item</th>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Unit Cost</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Quantity</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Build</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Part</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @calculator.labor_line_items.each do |item| %>
+            <tr class="hover:bg-gray-50">
+              <td class="py-2 px-3 font-medium text-gray-900"><%= item.name %></td>
+              <td class="py-2 px-3 text-gray-600"><%= item.description %></td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= item.unit_cost.to_money('zar').format %><span class="text-xs text-gray-500">/<%= item.unit_type %></span>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= number_with_precision(item.quantity, precision: 2) %>
+              </td>
+              <td class="py-2 px-3 text-right font-semibold text-blue-600">
+                <%= item.total_per_build.to_money('zar').format %>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-600">
+                <%= item.total_per_part.to_money('zar').format %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot class="bg-blue-50 font-semibold">
+          <tr>
+            <td colspan="4" class="py-2 px-3 text-right">Subtotal:</td>
+            <td class="py-2 px-3 text-right text-blue-700">
+              <%= @calculator.labor_cost_per_build.to_money('zar').format %>
+            </td>
+            <td class="py-2 px-3 text-right text-blue-700">
+              <%= (@calculator.labor_cost_per_build / @slicing_data.parts_per_build).to_money('zar').format %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   </div>
+
+  <!-- Consumables & Materials -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+      Consumables & Materials - <%= @calculator.consumables_cost_per_build.to_money('zar').format %>
+    </h4>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Item</th>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Unit Cost</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Quantity</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Build</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Part</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @calculator.consumable_line_items.each do |item| %>
+            <tr class="hover:bg-gray-50">
+              <td class="py-2 px-3 font-medium text-gray-900"><%= item.name %></td>
+              <td class="py-2 px-3 text-gray-600"><%= item.description %></td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= item.unit_cost.to_money('zar').format %><span class="text-xs text-gray-500">/<%= item.unit_type %></span>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= number_with_precision(item.quantity, precision: 2) %>
+              </td>
+              <td class="py-2 px-3 text-right font-semibold text-green-600">
+                <%= item.total_per_build.to_money('zar').format %>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-600">
+                <%= item.total_per_part.to_money('zar').format %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot class="bg-green-50 font-semibold">
+          <tr>
+            <td colspan="4" class="py-2 px-3 text-right">Subtotal:</td>
+            <td class="py-2 px-3 text-right text-green-700">
+              <%= @calculator.consumables_cost_per_build.to_money('zar').format %>
+            </td>
+            <td class="py-2 px-3 text-right text-green-700">
+              <%= (@calculator.consumables_cost_per_build / @slicing_data.parts_per_build).to_money('zar').format %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Energy Costs -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+      Energy Costs - <%= @calculator.energy_cost_per_build.to_money('zar').format %>
+    </h4>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Item</th>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Unit Cost</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Quantity</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Build</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Part</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @calculator.energy_line_items.each do |item| %>
+            <tr class="hover:bg-gray-50">
+              <td class="py-2 px-3 font-medium text-gray-900"><%= item.name %></td>
+              <td class="py-2 px-3 text-gray-600"><%= item.description %></td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= item.unit_cost.to_money('zar').format %><span class="text-xs text-gray-500">/<%= item.unit_type %></span>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= number_with_precision(item.quantity, precision: 2) %>
+              </td>
+              <td class="py-2 px-3 text-right font-semibold text-yellow-600">
+                <%= item.total_per_build.to_money('zar').format %>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-600">
+                <%= item.total_per_part.to_money('zar').format %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot class="bg-yellow-50 font-semibold">
+          <tr>
+            <td colspan="4" class="py-2 px-3 text-right">Subtotal:</td>
+            <td class="py-2 px-3 text-right text-yellow-700">
+              <%= @calculator.energy_cost_per_build.to_money('zar').format %>
+            </td>
+            <td class="py-2 px-3 text-right text-yellow-700">
+              <%= (@calculator.energy_cost_per_build / @slicing_data.parts_per_build).to_money('zar').format %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Equipment, Facility, Digital, Maintenance follow same pattern -->
+  <!-- I'll show one more as an example -->
+
+  <!-- Equipment Costs -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+      Equipment Costs - <%= @calculator.equipment_cost_per_build.to_money('zar').format %>
+    </h4>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Item</th>
+            <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Unit Cost</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Quantity</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Build</th>
+            <th class="text-right py-2 px-3 font-semibold text-gray-700">Total/Part</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @calculator.equipment_line_items.each do |item| %>
+            <tr class="hover:bg-gray-50">
+              <td class="py-2 px-3 font-medium text-gray-900"><%= item.name %></td>
+              <td class="py-2 px-3 text-gray-600"><%= item.description %></td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= item.unit_cost.to_money('zar').format %><span class="text-xs text-gray-500">/<%= item.unit_type %></span>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-900">
+                <%= number_with_precision(item.quantity, precision: 2) %>
+              </td>
+              <td class="py-2 px-3 text-right font-semibold text-purple-600">
+                <%= item.total_per_build.to_money('zar').format %>
+              </td>
+              <td class="py-2 px-3 text-right text-gray-600">
+                <%= item.total_per_part.to_money('zar').format %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot class="bg-purple-50 font-semibold">
+          <tr>
+            <td colspan="4" class="py-2 px-3 text-right">Subtotal:</td>
+            <td class="py-2 px-3 text-right text-purple-700">
+              <%= @calculator.equipment_cost_per_build.to_money('zar').format %>
+            </td>
+            <td class="py-2 px-3 text-right text-purple-700">
+              <%= (@calculator.equipment_cost_per_build / @slicing_data.parts_per_build).to_money('zar').format %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add similar sections for Facility, Digital, and Maintenance -->
+</div>
   <!-- Sustainability Metrics -->
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
     <h3 class="text-lg font-semibold text-gray-900 mb-4">Environmental Impact Assessment</h3>

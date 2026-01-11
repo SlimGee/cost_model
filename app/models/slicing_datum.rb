@@ -57,6 +57,13 @@ class SlicingDatum < ApplicationRecord
     end
   end
 
+  def build_time_hours_per_build
+    build_time_hours * parts_per_build
+  end
+
+  HATCH_SPACING_MM = 0.1 # Typical hatch spacing in mm
+  RECOATING_TIME_PER_LAYER_SECONDS = 10 # Typical recoating time per layer in seconds
+
   private
 
   def calculate_derived_values
@@ -72,10 +79,26 @@ class SlicingDatum < ApplicationRecord
     # Calculate total powder mass: M_total = M_part / η (utilization efficiency)
     self.total_powder_mass = part_mass / material_utilization
 
-    # Estimate build time (simplified for now)
-    # Build time is roughly proportional to volume and layer count
-    layer_count = part_height / layer_thickness
-    # Rough estimate: 5 seconds per layer + volume factor
-    self.build_time_hours = ((layer_count * 5) / 3600.0) + (part_volume / 100_000.0)
+    calculate_single_part_build_time
+  end
+
+  def calculate_single_part_build_time
+    return unless machine && part_height && layer_thickness && part_volume && support_volume && parts_per_build
+
+    # Total volume to melt (mm³)
+    total_volume_mm3 = (part_volume + support_volume) * parts_per_build
+
+    # Number of layers (assuming height doesn't increase with multiple parts)
+    num_layers = (part_height / layer_thickness).ceil
+
+    # Scanning time (seconds)
+    build_rate_mm3_per_s = layer_thickness * HATCH_SPACING_MM * machine.scan_speed
+    scanning_time_s = total_volume_mm3 / build_rate_mm3_per_s
+
+    # Recoating time (seconds)
+    recoating_time_s = num_layers * RECOATING_TIME_PER_LAYER_SECONDS
+
+    # Total build time (hours)
+    self.build_time_hours = (scanning_time_s + recoating_time_s) / 3600.0
   end
 end

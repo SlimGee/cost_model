@@ -47,7 +47,7 @@ class FinancialAnalyzer
   def builds_per_year
     Rails.cache.fetch("builds_per_year.slicing_data.#{slicing_data.id}") do
       available_hours = params.annual_operating_hours * params.machine_utilization_rate
-      (available_hours / slicing_data.build_time_hours).floor
+      (available_hours / slicing_data.build_time_hours)
     end
   end
 

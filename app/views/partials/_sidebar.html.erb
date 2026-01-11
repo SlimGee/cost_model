@@ -12,10 +12,6 @@
     class="flex items-center gap-2 pt-8 sidebar-header pb-7"
   >
     <%= link_to root_path do %>
-      <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-        <%= image_tag "logo/logo.svg", class: "dark:hidden" %>
-        <%= image_tag "logo/logo-dark.svg", class: "hidden dark:block" %>
-      </span>
     <% end %>
 
   </div>
@@ -54,6 +50,32 @@
             >
               <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                 Calculations
+              </span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="<%= materials_path %>"
+              @click="selected = (selected === 'Calendar' ? '':'Calendar')"
+              class="menu-item group"
+              :class="(selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
+            >
+              <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                Materials
+              </span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="<%= machines_path %>"
+              @click="selected = (selected === 'Calendar' ? '':'Calendar')"
+              class="menu-item group"
+              :class="(selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
+            >
+              <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                Machines
               </span>
             </a>
           </li>

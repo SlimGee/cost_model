@@ -16,6 +16,10 @@ class CostCalculator
     slicing_data.total_powder_mass * material.raw_material_price
   end
 
+  def powder_cost_per_build
+    powder_cost * slicing_data.parts_per_build
+  end
+
   def recycled_powder_mass
     # M_recycled = (M_total - M_part) × recycling_efficiency
     unused_powder = slicing_data.total_powder_mass - slicing_data.part_mass
@@ -31,16 +35,29 @@ class CostCalculator
     non_recycled_powder_mass * params.waste_disposal_cost_per_kg
   end
 
+  def waste_cost_per_build
+    waste_cost * slicing_data.parts_per_build
+  end
+
   def gas_cost
     # C_gas = V_gas × P_gas
     # Gas consumption based on build time
     gas_volume = slicing_data.build_time_hours * params.gas_consumption_per_hour
-    gas_volume * params.inert_gas_price
+    (gas_volume * params.inert_gas_price) / slicing_data.parts_per_build
+  end
+
+  def gas_cost_per_build
+    gas_cost * slicing_data.parts_per_build
   end
 
   def consumables_cost
     # C_consumables = (Powder cost) + (Gas cost) + (Waste cost)
     powder_cost + gas_cost + waste_cost
+  end
+
+  def consumables_cost_per_build
+    # C_consumables = (Powder cost) + (Gas cost) + (Waste cost)
+    consumables_cost * slicing_data.parts_per_build
   end
 
   def consumables_cost_per_kg
@@ -51,12 +68,16 @@ class CostCalculator
 
   def energy_consumption
     # E_part = Build time × Machine power consumption
-    slicing_data.build_time_hours * params.machine_power_consumption
+    (slicing_data.build_time_hours / slicing_data.parts_per_build) * params.machine_power_consumption
   end
 
   def energy_cost
     # C_energy = E_part × Electricity rate
     energy_consumption * params.electricity_rate
+  end
+
+  def energy_cost_per_build
+    energy_cost * slicing_data.parts_per_build
   end
 
   def energy_efficiency_per_kg
@@ -153,8 +174,8 @@ class CostCalculator
   # ========== TOTAL COSTS ==========
 
   def total_cost_per_build
-    consumables_cost +
-      energy_cost +
+    consumables_cost_per_build +
+      energy_cost_per_build +
       equipment_cost_per_build +
       labor_cost_per_build +
       facility_cost_per_build +
@@ -208,8 +229,8 @@ class CostCalculator
 
   def cost_breakdown
     {
-      consumables: consumables_cost,
-      energy: energy_cost,
+      consumables: consumables_cost_per_build,
+      energy: energy_cost_per_build,
       equipment: equipment_cost_per_build,
       labor: labor_cost_per_build + setup_cost,
       facility: facility_cost_per_build,

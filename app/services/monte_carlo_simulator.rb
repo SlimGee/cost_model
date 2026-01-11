@@ -515,7 +515,7 @@ class MonteCarloSimulator
 
     # Annual calculations
     available_hours = params.annual_operating_hours * sampled[:machine_utilization]
-    builds_per_year = (available_hours / (slicing_data.build_time_hours * sampled[:build_time_multiplier])).floor
+    builds_per_year = (available_hours / (slicing_data.build_time_hours * sampled[:build_time_multiplier]))
     annual_profit = builds_per_year * profit_per_build
 
     # Build cash flow array: [initial_investment (negative), then annual profits]

@@ -19,10 +19,10 @@
       "
     >
       <p class="text-blue-100 text-sm mb-1">Cost per Part</p>
-      <p class="text-3xl font-bold">R
-        <%= number_with_precision(@calculator.total_cost_per_part, precision: 2) %></p>
-      <p class="text-blue-100 text-xs mt-2">Total Build: R
-        <%= number_with_precision(@calculator.total_cost_per_build, precision: 2) %></p>
+      <p class="text-3xl font-bold">
+        <%= @calculator.total_cost_per_part.to_money('zar').format %></p>
+      <p class="text-blue-100 text-xs mt-2">Total Build: 
+        <%= @calculator.total_cost_per_build.to_money('zar').format %></p>
     </div>
 
     <div
@@ -659,14 +659,18 @@
       <div class="pt-3 border-t-2 border-gray-300">
         <div class="flex justify-between items-center">
           <span class="text-base font-bold text-gray-900">Total per Build</span>
-          <span class="text-base font-bold text-gray-900">R
-            <%= number_with_precision(@calculator.total_cost_per_build, precision: 2) %></span>
+          <span class="text-base font-bold text-gray-900">
+            <%=  @calculator.total_cost_per_build.to_money('zar').format %>
+          </span>
         </div>
         <div class="flex justify-between items-center mt-1">
-          <span class="text-sm text-gray-600">Cost per Part (<%= @slicing_data.parts_per_build %>
-            parts)</span>
-          <span class="text-sm font-semibold text-blue-600">R
-            <%= number_with_precision(@calculator.total_cost_per_part, precision: 2) %></span>
+          <span class="text-sm text-gray-600">
+            Cost per Part (<%= @slicing_data.parts_per_build %>
+          parts)
+          </span>
+          <span class="text-sm font-semibold text-blue-600">
+            <%= @calculator.total_cost_per_part.to_money('zar').format %>
+          </span>
         </div>
       </div>
     </div>
@@ -683,23 +687,25 @@
       <dl class="space-y-3">
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Powder Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.powder_cost, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.powder_cost_per_build.to_money('zar').format %>
+          </dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Inert Gas</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.gas_cost, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.gas_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Waste Disposal</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.waste_cost, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.waste_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 bg-green-50 -mx-2 px-2 rounded">
           <dt class="text-sm font-bold text-gray-900">Total Consumables</dt>
-          <dd class="text-sm font-bold text-green-600">R
-            <%= number_with_precision(@calculator.consumables_cost, precision: 2) %></dd>
+          <dd class="text-sm font-bold text-green-600">
+            <%= @calculator.consumables_cost_per_build.to_money('zar').format %>
+          </dd>
         </div>
       </dl>
     </div>
@@ -713,26 +719,26 @@
       <dl class="space-y-3">
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Setup Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.setup_cost, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.setup_cost.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Operator Time (<%= number_with_precision(@calculator.operator_time, precision: 1) %>h)</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.labor_cost_per_build, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.labor_cost_per_build.to_money('zar').format %>
+          </dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Labor Rate</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= @params.labor_rate %>/hr</dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @params.labor_rate.to_money('zar').format %>/hr</dd>
         </div>
         <div class="flex justify-between py-2 bg-blue-50 -mx-2 px-2 rounded">
           <dt class="text-sm font-bold text-gray-900">Total Labor</dt>
-          <dd class="text-sm font-bold text-blue-600">R
-            <%= number_with_precision(
-              @calculator.labor_cost_per_build + @calculator.setup_cost,
-              precision: 2,
-            ) %></dd>
+          <dd class="text-sm font-bold text-blue-600">
+            <%= (@calculator.labor_cost_per_build + @calculator.setup_cost).to_money('zar').format
+            %>
+          </dd>
         </div>
       </dl>
     </div>
@@ -761,8 +767,8 @@
         </div>
         <div class="flex justify-between py-2 bg-yellow-50 -mx-2 px-2 rounded">
           <dt class="text-sm font-bold text-gray-900">Total Energy Cost</dt>
-          <dd class="text-sm font-bold text-yellow-600">R
-            <%= number_with_precision(@calculator.energy_cost, precision: 2) %></dd>
+          <dd class="text-sm font-bold text-yellow-600">
+            <%= @calculator.energy_cost_per_build.to_money('zar').format %></dd>
         </div>
       </dl>
     </div>
@@ -776,33 +782,31 @@
       <dl class="space-y-3">
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Machine Cost</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.equipment_cost_per_build, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.equipment_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Facility Overhead</dt>
-          <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.facility_cost_per_build, precision: 2) %></dd>
+          <dd class="text-sm font-semibold text-gray-900">
+            <%= @calculator.facility_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Digital Infrastructure</dt>
           <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.digital_cost_per_build, precision: 2) %></dd>
+            <%= @calculator.digital_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 border-b border-gray-100">
           <dt class="text-sm text-gray-600">Maintenance</dt>
           <dd class="text-sm font-semibold text-gray-900">R
-            <%= number_with_precision(@calculator.maintenance_cost_per_build, precision: 2) %></dd>
+            <%= @calculator.maintenance_cost_per_build.to_money('zar').format %></dd>
         </div>
         <div class="flex justify-between py-2 bg-purple-50 -mx-2 px-2 rounded">
           <dt class="text-sm font-bold text-gray-900">Total Overhead</dt>
           <dd class="text-sm font-bold text-purple-600">
-            R
-            <%= number_with_precision(
-              @calculator.equipment_cost_per_build + @calculator.facility_cost_per_build +
-                @calculator.digital_cost_per_build + @calculator.maintenance_cost_per_build,
-              precision: 2,
-            ) %>
+            
+            <%= (@calculator.equipment_cost_per_build + @calculator.facility_cost_per_build +
+                @calculator.digital_cost_per_build + @calculator.maintenance_cost_per_build).to_money('zar').format
+             %>
           </dd>
         </div>
       </dl>

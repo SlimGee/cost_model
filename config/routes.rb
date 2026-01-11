@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :machines
+  resources :materials
   root "home#index"
   resources :calculations do
     collection do

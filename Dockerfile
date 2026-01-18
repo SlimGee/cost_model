@@ -22,7 +22,6 @@ RUN apt-get update -qq && \
 
 # Set production environment variables and enable jemalloc for reduced memory usage and latency.
 ENV RAILS_ENV="development" \
-  RAILS_MASTER_KEY="1f73b227ae440914d60c08583233ecb5" \
   BUNDLE_DEPLOYMENT="1" \
   BUNDLE_PATH="/usr/local/bundle" \
   BUNDLE_WITHOUT="development" \

@@ -555,7 +555,6 @@
 </script>
 
 
-
   <!-- Break-Even Analysis -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -660,7 +659,7 @@
         <div class="flex justify-between items-center">
           <span class="text-base font-bold text-gray-900">Total per Build</span>
           <span class="text-base font-bold text-gray-900">
-            <%=  @calculator.total_cost_per_build.to_money('zar').format %>
+            <%= @calculator.total_cost_per_build.to_money('zar').format %>
           </span>
         </div>
         <div class="flex justify-between items-center mt-1">

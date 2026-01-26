@@ -312,6 +312,10 @@ class SlicingDatum < ApplicationRecord
     # Calculate total powder mass: M_total = M_part / η (utilization efficiency)
     self.total_powder_mass = part_mass / material_utilization
 
+    if upfront_investment.zero? || upfront_investment.blank?
+      self.upfront_investment = total_cost_from_line_items_per_build
+    end
+
     calculate_single_part_build_time
   end
 

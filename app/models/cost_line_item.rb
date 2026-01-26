@@ -18,7 +18,7 @@ class CostLineItem < ApplicationRecord
   validates :unit_cost, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :quantity, presence: true, numericality: { greater_than: 0 }
 
-  before_save :calculate_total_cost
+  before_validation :calculate_total_cost
 
   scope :by_category, ->(category) { where(category: category) }
   scope :labor_items, -> { where(category: "labor") }

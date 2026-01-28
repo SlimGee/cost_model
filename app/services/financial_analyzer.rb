@@ -10,6 +10,33 @@ class FinancialAnalyzer
     @params = slicing_data.effective_parameters
   end
 
+  # ========== BREAK-EVEN ANALYSIS (NEW) ==========
+
+  def break_even_analyzer
+    @break_even_analyzer ||= BreakEvenAnalyzer.new(self)
+  end
+
+  # Delegate main break-even methods for convenience
+  def break_even_analysis
+    break_even_analyzer.break_even_summary
+  end
+
+  def break_even_units
+    break_even_analyzer.break_even_units_median
+  end
+
+  def break_even_revenue
+    break_even_analyzer.break_even_revenue_median
+  end
+
+  def break_even_time_months
+    break_even_analyzer.break_even_time_months_median
+  end
+
+  def break_even_scenarios
+    break_even_analyzer.scenario_comparison
+  end
+
   # ========== REVENUE CALCULATIONS ==========
 
   def revenue_per_build

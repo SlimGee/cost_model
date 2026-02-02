@@ -58,13 +58,15 @@ class MachinesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_machine
-      @machine = Machine.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def machine_params
-      params.expect(machine: [ :annual_maintenance_cost, :build_volume_x, :build_volume_y, :build_volume_z, :laser_power, :lifespan_years, :model_number, :name, :purchase_price ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_machine
+    @machine = Machine.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def machine_params
+    params.expect(machine: %i[annual_maintenance_cost build_volume_x build_volume_y build_volume_z scan_speed
+                              laser_power lifespan_years model_number name purchase_price])
+  end
 end
